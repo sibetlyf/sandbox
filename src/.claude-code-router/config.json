@@ -1,0 +1,63 @@
+{
+  "PORT": 3459,
+  "LOG": true,
+  "LOG_LEVEL": "trace",
+  "transformers": [
+    {
+      "path": "/root/.claude-code-router/plugins/dashscope-transformer.js",
+      "options": {
+        "enable_thinking": false,
+        "stream": true
+      }
+    }
+  ],
+  "Providers": [
+    {
+      "name": "dashscope",
+      "api_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "api_key": "sk-d9e5f3b88a174d9dad0ae94fb571f4ec",
+      "models": [
+        "qwen3.5-plus",
+        "qwen3-vl-8b-thinking"
+      ],
+      "transformer": {
+        "use": [
+          "dashscope"
+        ]
+      }
+    },
+    {
+      "name": "siliconflow",
+      "api_base_url": "https://api.siliconflow.cn/v1/chat/completions",
+      "api_key": "sk-hvccyrotlfwpnyeekpqqfohqhnhfkqsgyxmtqhnaamyajjel",
+      "models": [
+        "MiniMaxAI/MiniMax-M2",
+        "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+      ],
+      "transformer": {
+        "use": [
+          "openrouer"
+        ]
+      }
+    },
+    {
+      "name": "jiutian",
+      "api_base_url": "https://jiutian.10086.cn/largemodel/moma/api/v3/chat/completions",
+      "api_key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcGlfa2V5IjoiNjkzMDFlN2NiODE5YWIwMGZkYjYxYjUxIiwiZXhwIjoxODU1NDQzNTE4NjIwNTEsInRpbWVzdGFtcCI6MTc2NDc2MTI1MX0.VJ68I58MyV4xeSVYnM7-E6MimYimGrd0PA3U40yJfQE",
+      "models": [
+        "minmax-m2",
+        "glm-4-6-fp8"
+      ],
+      "transformer": {
+        "use": [
+          "openrouter"
+        ]
+      }
+    }
+  ],
+  "Router": {
+    "default": "dashscope,qwen3.5-plus",
+    "longContextThreshold": 60000,
+    "image": "dashscope,qwen3-vl-8b-thinking"
+  }
+}

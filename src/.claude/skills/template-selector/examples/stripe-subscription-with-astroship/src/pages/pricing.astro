@@ -1,0 +1,48 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import PricingCard from "@components/pricing.astro";
+import { supabase } from "../utils/supabase";
+
+// 从 Supabase 查询数据（示例：获取 "todos" 表的所有数据）
+const { data, error } = await supabase
+  .from("products")
+  .select("*, prices(*)")
+  .eq("active", true)
+  .eq("prices.active", true);
+
+if (error) {
+  console.error("获取数据失败:", error);
+}
+console.log("data", JSON.stringify(data));
+
+const pricing =
+  data
+    ?.map((item) => {
+      return {
+        ...item,
+        price: item.prices[0],
+        features: item.marketing_features.map((item) => item.name),
+      };
+    })
+    .sort((a, b) => a.price.unit_amount - b.price.unit_amount) ?? [];
+---
+
+<Layout title="Pricing">
+  <script is:inline src="https://js.stripe.com/v3/pricing-table.js"></script>
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Pricing</Fragment>
+      <Fragment slot="desc">
+        Simple & Predictable pricing. No Surprises.
+      </Fragment>
+    </Sectionhead>
+    <div class="mt-20">
+      <div
+        class="grid md:grid-cols-3 gap-10 mx-auto max-w-(--breakpoint-lg) mt-12">
+        {pricing.map((item) => <PricingCard plan={item} />)}
+      </div>
+    </div>
+  </Container>
+</Layout>

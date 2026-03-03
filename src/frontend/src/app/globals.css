@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* V0 Authentic Light Theme (from screenshots) */
+  --background: 0 0% 100%; /* White background */
+  --foreground: 0 0% 10%; /* Dark text */
+  
+  --card: 0 0% 96%; /* Light gray card */
+  --card-foreground: 0 0% 10%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 10%;
+  
+  --primary: 217 91% 60%; /* Blue accent */
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 10%;
+  
+  --muted: 0 0% 96%; /* Light gray for muted elements */
+  --muted-foreground: 0 0% 45%; /* Medium gray text */
+  
+  --accent: 217 91% 60%; /* Blue */
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  
+  --border: 0 0% 90%; /* Light border */
+  --input: 0 0% 90%;
+  --ring: 217 91% 60%;
+  
+  --radius: 0.75rem; /* More rounded like V0 */
+  
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 0 0% 10%;
+  --sidebar-primary: 217 91% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 0% 96%;
+  --sidebar-accent-foreground: 0 0% 10%;
+  --sidebar-border: 0 0% 90%;
+  --sidebar-ring: 217 91% 60%;
+  --sidebar: 0 0% 98%;
+  
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  
+  /* V0-specific colors */
+  --warning-bg: 45 100% 95%; /* Light yellow for warnings */
+  --warning-border: 45 100% 70%;
+  --warning-text: 45 100% 30%;
+  
+  --code-bg: 0 0% 12%; /* Dark code background */
+  --code-text: 0 0% 90%;
+}
+
+.dark {
+  /* V0-style dark mode */
+  --background: 0 0% 7%; /* Very dark gray, not pure black */
+  --foreground: 0 0% 95%;
+  
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 95%;
+  
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 95%;
+  
+  --primary: 217 91% 65%; /* Slightly brighter blue for dark mode */
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 95%;
+  
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+  
+  --accent: 217 91% 65%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  
+  --border: 0 0% 20%; /* Subtle dark borders */
+  --input: 0 0% 15%;
+  --ring: 217 91% 65%;
+  
+  --sidebar-background: 0 0% 5%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-primary: 217 91% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 0% 15%;
+  --sidebar-accent-foreground: 0 0% 95%;
+  --sidebar-border: 0 0% 20%;
+  --sidebar-ring: 217 91% 65%;
+  --sidebar: 0 0% 5%;
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring) / 0.5);
+  }
+  
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* V0-style scrollbar (subtle) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 80%);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 0% 70%);
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 30%);
+  }
+  
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 0% 40%);
+  }
+}
+
+/* V0-style prose (light theme) */
+@layer components {
+  .prose {
+    --tw-prose-body: hsl(0 0% 20%);
+    --tw-prose-headings: hsl(0 0% 10%);
+    --tw-prose-lead: hsl(0 0% 30%);
+    --tw-prose-links: hsl(217 91% 60%);
+    --tw-prose-bold: hsl(0 0% 10%);
+    --tw-prose-counters: hsl(0 0% 50%);
+    --tw-prose-bullets: hsl(0 0% 60%);
+    --tw-prose-hr: hsl(0 0% 90%);
+    --tw-prose-quotes: hsl(0 0% 20%);
+    --tw-prose-quote-borders: hsl(0 0% 90%);
+    --tw-prose-captions: hsl(0 0% 50%);
+    --tw-prose-code: hsl(217 91% 60%);
+    --tw-prose-pre-code: hsl(0 0% 90%);
+    --tw-prose-pre-bg: hsl(0 0% 12%);
+    --tw-prose-th-borders: hsl(0 0% 80%);
+    --tw-prose-td-borders: hsl(0 0% 90%);
+    font-size: 0.875rem;
+  }
+  
+  /* Gradient backgrounds */
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(217 91% 60% / 0.1) 0%, hsl(280 100% 70% / 0.1) 100%);
+  }
+  
+  .dark .gradient-bg {
+    background: linear-gradient(135deg, hsl(217 91% 60% / 0.15) 0%, hsl(280 100% 70% / 0.15) 100%);
+  }
+  
+  /* Animated gradient border */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(90deg, hsl(217 91% 60%), hsl(280 100% 70%), hsl(190 100% 50%));
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  /* Pulse animation for processing */
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 hsl(217 91% 60% / 0.7);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 0 10px hsl(217 91% 60% / 0);
+    }
+  }
+  
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  /* Shimmer effect */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(0 0% 100% / 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+}
+
+/* Smooth transitions */
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.15s ease-in-out;
+  }
+  
+  /* Typography utilities */
+  .text-message-primary {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+  }
+  
+  .text-message-secondary {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-message-small {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-tool-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  
+  .text-timestamp {
+    font-size: 0.6875rem;
+    color: hsl(var(--muted-foreground));
+    font-weight: 400;
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}

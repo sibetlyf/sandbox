@@ -1,0 +1,44 @@
+{
+  "numStartups": 107,
+  "installMethod": "global",
+  "autoUpdates": true,
+  "theme": "light",
+  "hasSeenTasksHint": true,
+  "customApiKeyResponses": {
+    "approved": [
+      "4ef39ee54c57e1723e7c"
+    ],
+    "rejected": []
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": 1,
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hasCompletedOnboarding": true,
+  "mcpServers": {
+    "bing-cn-mcp-server": {
+      "type": "sse",
+      "url": "https://mcp.api-inference.modelscope.net/3fa0a1614bf142/sse"
+    },
+    "pixabay-mcp": {
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "pixabay-mcp@latest"
+      ],
+      "command": "cmd",
+      "env": {
+        "PIXABAY_API_KEY": "53312803-19c141bade8d0b8e930a236ca"
+      },
+      "type": "stdio"
+    }
+  },
+  "officialMarketplaceAutoInstallAttempted": true,
+  "officialMarketplaceAutoInstalled": true,
+  "opus45MigrationComplete": true,
+  "sonnet45MigrationComplete": true,
+  "thinkingMigrationComplete": true,
+  "userID": "9199c49ed517f8db42054954c6ebd27f80e67a83dc37f5d0692a54312dc802d0",
+  "opusProMigrationComplete": true
+}

@@ -1,0 +1,96 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import { getCollection } from "astro:content";
+import { contentfulClient } from "../../utils/contentful";
+import type { Blog } from "../../utils/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+
+// Generate a new path for every collection entry
+export async function getStaticPaths() {
+  if (contentfulClient) {
+    // Priority 1: Use Contentful if configured
+    const entries = await contentfulClient.getEntries<Blog>({
+      content_type: "blog",
+    });
+    return entries.items.map((entry) => {
+      const { slug } = entry.fields;
+      return {
+        params: { slug: slug },
+        props: { entry, useContentful: true },
+      };
+    });
+  } else {
+    // Priority 2: Use local static data if Contentful not configured
+    const blogEntries = await getCollection("blog");
+    return blogEntries.map((entry) => {
+      return {
+        params: { slug: entry.slug },
+        props: { entry, useContentful: false },
+      };
+    });
+  }
+}
+
+const { entry, useContentful } = Astro.props;
+
+let title: string, category: string, author: string, date: string;
+let ContentComponent: any = null;
+let contentHtml: string = "";
+
+if (useContentful) {
+  const contentfulEntry = entry as any;
+  const { fields } = contentfulEntry;
+  title = fields.title;
+  category = fields.category;
+  author = fields.author;
+  date = fields.date;
+  contentHtml = documentToHtmlString(fields.content);
+} else {
+  const localEntry = entry as any;
+  title = localEntry.data?.title || "Untitled";
+  category = localEntry.data?.category || "Uncategorized";
+  author = localEntry.data?.author || "Unknown";
+  date = localEntry.data?.publishDate || new Date().toISOString();
+  const { Content } = await localEntry.render();
+  ContentComponent = Content;
+}
+---
+
+<Layout title={title}>
+  <Container>
+    <div class="mx-auto max-w-3xl mt-14">
+      <span class="text-blue-400 uppercase tracking-wider text-sm font-medium">
+        {category}
+      </span>
+      <h1
+        class="text-4xl lg:text-5xl font-bold lg:tracking-tight mt-1 lg:leading-tight">
+        {title}
+      </h1>
+      <div class="flex gap-2 mt-3 items-center flex-wrap md:flex-nowrap">
+        <span class="text-gray-400">
+          {author}
+        </span>
+        <span class="text-gray-400">•</span>
+        <time class="text-gray-400" datetime={new Date(date).toISOString()}>
+          {new Date(date).toDateString()}
+        </time>
+      </div>
+    </div>
+
+    <div class="mx-auto prose prose-lg mt-6 max-w-3xl">
+      {useContentful ? (
+        <article set:html={contentHtml} />
+      ) : ContentComponent ? (
+        <ContentComponent />
+      ) : null}
+    </div>
+    <div class="text-center mt-8">
+      <a
+        href="/blog"
+        class="bg-gray-100 px-5 py-3 rounded-md hover:bg-gray-200 transition"
+        >← Back to Blog</a
+      >
+    </div>
+  </Container>
+</Layout>
