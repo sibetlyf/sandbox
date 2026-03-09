@@ -10,15 +10,28 @@ import uvicorn
 from openai import AsyncOpenAI
 
 # Setup logging
-logging.basicConfig(level=logging.INFO)
+STREAM_LOG_FILE = 'stream-debug.jsonl'
+APP_LOG_FILE = 'proxy.log'
+
+# Ensure log files exist
+for log_path in [STREAM_LOG_FILE, APP_LOG_FILE]:
+    if not os.path.exists(log_path):
+        with open(log_path, 'a', encoding='utf-8') as f:
+            pass
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(APP_LOG_FILE, encoding='utf-8')
+    ]
+)
 logger = logging.getLogger(__name__)
 
 # Configuration
 CONFIG_FILE = 'proxy-config.json'
-LOGS_DIR = 'logs'
 DEFAULT_PORT = 30056
-
-os.makedirs(LOGS_DIR, exist_ok=True)
 
 app = FastAPI()
 
@@ -36,7 +49,7 @@ def load_config() -> Dict[str, Any]:
 @app.post("/chat/completions")
 async def chat_completions(request: Request):
     config = load_config()
-    stream_log_file = os.path.join(LOGS_DIR, 'stream-debug.jsonl')
+    stream_log_file = STREAM_LOG_FILE
     
     try:
         body = await request.json()
@@ -48,12 +61,13 @@ async def chat_completions(request: Request):
     model = request_params.get("model", "unknown")
     
     print(f"[Proxy] New Request: {model}")
+    print(f"[Proxy] Request Body:\n{json.dumps(request_params, ensure_ascii=False, indent=2)}")
     
     # 记录请求
     try:
         with open(stream_log_file, 'a', encoding='utf-8') as f:
             f.write(f"\n--- Request Start {time.strftime('%Y-%m-%dT%H:%M:%S%z')} ---\n")
-            f.write(json.dumps({"type": "request", "model": model}) + "\n")
+            f.write(json.dumps({"type": "request", "model": model, "body": request_params}, ensure_ascii=False, indent=2) + "\n")
     except Exception:
         pass
 
@@ -222,14 +236,14 @@ async def chat_completions(request: Request):
                 
                 # 如果不跳过，记录并转发chunk
                 if not should_skip:
-                    chunk_json = json.dumps(chunk_dict, ensure_ascii=False)
+                    chunk_json_pretty = json.dumps(chunk_dict, ensure_ascii=False, indent=2)
                     try:
                         with open(stream_log_file, 'a', encoding='utf-8') as f:
-                            f.write(chunk_json + "\n")
+                            f.write(chunk_json_pretty + "\n")
                     except Exception:
                         pass
                     
-                    yield f"data: {chunk_json}\n\n"
+                    yield f"data: {json.dumps(chunk_dict, ensure_ascii=False)}\n\n"
             
             # 根据qwen code的验证逻辑决定是否需要注入finish_reason
             # 客户端逻辑: if (!hasToolCall && (!hasFinishReason || !hasValidContent))
@@ -249,13 +263,13 @@ async def chat_completions(request: Request):
                         "finish_reason": "stop"
                     }]
                 }
-                chunk_json = json.dumps(stop_chunk, ensure_ascii=False)
+                chunk_json_pretty = json.dumps(stop_chunk, ensure_ascii=False, indent=2)
                 try:
                     with open(stream_log_file, 'a', encoding='utf-8') as f:
-                        f.write(chunk_json + "\n")
+                        f.write(chunk_json_pretty + "\n")
                 except Exception:
                     pass
-                yield f"data: {chunk_json}\n\n"
+                yield f"data: {json.dumps(stop_chunk, ensure_ascii=False)}\n\n"
             
             logger.info(f"Stream completed: {chunk_count} chunks, {skipped_count} skipped, finish={has_finish_reason}, tools={has_tool_calls}, content={has_content}, reasoning={has_reasoning}")
 
