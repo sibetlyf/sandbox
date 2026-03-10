@@ -57,7 +57,7 @@
     }
   ],
   "Router": {
-    "default": "dashscope,qwen3.5-plus",
+    "default": "jiutian,qwen3.5-397B-fp8",
     "longContextThreshold": 60000,
     "image": "dashscope,qwen3-vl-8b-thinking"
   }

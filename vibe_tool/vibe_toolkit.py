@@ -56,9 +56,9 @@ class VibeCodingToolkit(Toolkit):
             session = f"-r {session_id}" if session_id and use_resume else ""
             if self.agent_type == "opencode":
                 session = f"--session {session_id}" if session_id and use_resume else ""
-                cmd_base = f'opencode {session} --format json'.strip()
+                cmd_base = f'opencode {session} --format json'.replace("  ", " ").strip()
             else:
-                cmd_base = f'ccr code -p {session} --output-format stream-json --verbose --dangerously-skip-permissions'.strip()
+                cmd_base = f'ccr code -p {session} --output-format stream-json --verbose --dangerously-skip-permissions'.replace("  ", " ").strip()
             # 用 PowerShell 读取临时文件并传给 CLI
             ps_script = (
                 f'cd "{self.workspace_path}"; '
@@ -74,9 +74,9 @@ class VibeCodingToolkit(Toolkit):
         session = f"-r {session_id}" if session_id and use_resume else ""
         if self.agent_type == "opencode":
             session = f"--session {session_id}" if session_id and use_resume else ""
-            cmd = f"opencode {session} --format json {escaped}".strip()
+            cmd = f"opencode {session} --format json {escaped}".replace("  ", " ").strip()
         else:
-            cmd = f"ccr code -p {session} --output-format stream-json --verbose --dangerously-skip-permissions {escaped}".strip()
+            cmd = f"ccr code -p {session} --output-format stream-json --verbose --dangerously-skip-permissions {escaped}".replace("  ", " ").strip()
         return ["/bin/bash", "-c", f"cd {shlex.quote(self.workspace_path)} && {cmd}"]
 
 

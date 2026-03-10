@@ -9,7 +9,7 @@ import json
 import asyncio
 from typing import Optional, Dict, Any, AsyncIterator
 from concurrent.futures import ThreadPoolExecutor
-from datamodel import ParseData
+from .datamodel import ParseData
 
 
 class StreamParser:
